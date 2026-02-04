@@ -3,6 +3,7 @@ package com.surgegate.backend.model;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -11,7 +12,16 @@ public class Event {
     @Id
     private String id;
     private String name;
-    private String date;
+    private String description;
+    private LocalDateTime date;
     private String venue;
-    private List<TicketType> ticketTypes; // e.g., VIP, General
+    private List<TicketType> ticketTypes;
+
+    @Data
+    public static class TicketType {
+        private String id; // e.g., "vip"
+        private String name;
+        private double price;
+        private int quantity;
+    }
 }
