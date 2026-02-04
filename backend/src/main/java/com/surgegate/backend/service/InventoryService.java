@@ -3,24 +3,25 @@ package com.surgegate.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import jakarta.annotation.PostConstruct;
 
 @Service
 public class InventoryService {
+    @Autowired private StringRedisTemplate redisTemplate;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-
-    // Initialize stock to 5 tickets when the app starts
-    @PostConstruct
-    public void initStock() {
-        redisTemplate.opsForValue().set("event_stock:concert_123", "5");
-        System.out.println("--- STOCK RESET TO 5 ---");
+    // Called when Organizer creates an event
+    public void initStock(String eventId, String ticketType, int count) {
+        String key = "stock:" + eventId + ":" + ticketType;
+        redisTemplate.opsForValue().set(key, String.valueOf(count));
     }
 
-    public boolean deductStock(String eventId) {
-        // Atomic Decrement: Safe even with 1000 concurrent requests
-        Long stock = redisTemplate.opsForValue().decrement("event_stock:" + eventId);
-        return stock != null && stock >= 0;
+    // Called when Attendee buys a ticket
+    public boolean deductStock(String eventId, String ticketType) {
+        String key = "stock:" + eventId + ":" + ticketType;
+        Long remaining = redisTemplate.opsForValue().decrement(key);
+        if (remaining != null && remaining >= 0) return true;
+
+        // Rollback if we went below 0
+        redisTemplate.opsForValue().increment(key);
+        return false;
     }
 }
