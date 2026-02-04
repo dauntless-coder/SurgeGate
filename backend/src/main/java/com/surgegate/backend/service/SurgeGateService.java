@@ -1,11 +1,12 @@
 package com.surgegate.backend.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.surgegate.backend.model.Ticket;
+import com.surgegate.backend.model.Ticket; // <--- MAKE SURE THIS IMPORT IS HERE
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
 
 @Service
@@ -31,9 +32,16 @@ public class SurgeGateService {
         if (remaining != null && remaining >= 0) {
             String ticketId = UUID.randomUUID().toString();
 
-            // Send to Kafka
             try {
-                Ticket ticket = new Ticket(ticketId, eventId, typeId, userId, "PENDING");
+                // Use Builder instead of Constructor (Safer)
+                Ticket ticket = Ticket.builder()
+                        .id(ticketId)
+                        .eventId(eventId)
+                        .ticketTypeId(typeId)
+                        .userId(userId)
+                        .status("PENDING")
+                        .build();
+
                 String json = objectMapper.writeValueAsString(ticket);
                 kafkaTemplate.send("orders_topic", json);
             } catch (Exception e) {
