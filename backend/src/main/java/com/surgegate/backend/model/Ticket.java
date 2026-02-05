@@ -13,11 +13,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Document(collection = "tickets")
 public class Ticket {
-    @Id
-    private String id;
+    @Id private String id;
     private String eventId;
     private String ticketTypeId;
     private String userId;
     private String status; // "PENDING", "CONFIRMED", "USED"
-    private String qrCode; // Created later by the consumer
+    private String qrCode;
 }

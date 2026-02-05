@@ -1,14 +1,13 @@
 package com.surgegate.backend.controller;
 
 import com.surgegate.backend.config.JwtUtil;
+import com.surgegate.backend.dto.*;
 import com.surgegate.backend.model.User;
 import com.surgegate.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,6 +20,9 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody User user) {
+        if(userRepository.findByEmail(user.getEmail()).isPresent())
+            return ResponseEntity.badRequest().body("Email exists");
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ATTENDEE"); // Default role
         userRepository.save(user);
@@ -28,12 +30,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> creds) {
-        User user = userRepository.findByEmail(creds.get("email")).orElseThrow();
-        if (passwordEncoder.matches(creds.get("password"), user.getPassword())) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+        User user = userRepository.findByEmail(req.getEmail()).orElseThrow();
+        if (passwordEncoder.matches(req.getPassword(), user.getPassword())) {
             String token = jwtUtil.generateToken(user);
-            return ResponseEntity.ok(Map.of("token", token, "role", user.getRole()));
+            return ResponseEntity.ok(new AuthResponse(token, user.getRole()));
         }
-        return ResponseEntity.status(401).body("Invalid Credentials");
+        return ResponseEntity.status(401).body("Invalid");
     }
 }
