@@ -1,7 +1,6 @@
-package com.devtiro.tickets.config;
+package com.surgegate.backend.config;
 
 import com.devtiro.tickets.filters.UserProvisioningFilter;
-import com.surgegate.backend.config.JwtAuthenticationConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

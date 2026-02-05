@@ -1,22 +1,48 @@
 package com.surgegate.backend.mappers;
 
-import com.surgegate.backend.dto.CreateEventRequestDto;
+import com.surgegate.backend.domain.CreateEventRequest;
+import com.surgegate.backend.domain.CreateTicketTypeRequest;
+import com.surgegate.backend.domain.UpdateEventRequest;
+import com.surgegate.backend.domain.UpdateTicketTypeRequest;
+
+import com.surgegate.backend.domain.dtos.*;
 import com.surgegate.backend.entities.Event;
-import org.springframework.stereotype.Component;
+import com.surgegate.backend.entities.TicketType;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.UUID;
+@Mapper(componentModel = "spring")
+public interface EventMapper {
 
-@Component
-public class EventMapper {
+    // --- Request Mapping (DTO -> Domain) ---
+    CreateEventRequest fromDto(CreateEventRequestDto dto);
+    CreateTicketTypeRequest fromDto(CreateTicketTypeRequestDto dto);
 
-    public Event toEntity(CreateEventRequestDto dto) {
-        Event event = new Event();
-        event.setId(UUID.randomUUID().toString()); // Generate ID here
-        event.setName(dto.getName());
-        event.setDescription(dto.getDescription());
-        event.setDate(dto.getDate());
-        event.setVenue(dto.getVenue());
-        event.setTicketTypes(dto.getTicketTypes());
-        return event;
-    }
+    UpdateEventRequest fromDto(UpdateEventRequestDto dto);
+    UpdateTicketTypeRequest fromDto(UpdateTicketTypeRequestDto dto);
+
+    // --- Response Mapping (Entity -> DTO) ---
+
+    // Create Response
+    CreateEventResponseDto toDto(Event event);
+    CreateTicketTypeResponseDto toDto(TicketType ticketType);
+
+    // Update Response
+    UpdateEventResponseDto toUpdateEventResponseDto(Event event);
+    UpdateTicketTypeResponseDto toUpdateTicketTypeResponseDto(TicketType ticketType);
+
+    // List Events
+    ListEventResponseDto toListEventResponseDto(Event event);
+    ListEventTicketTypeResponseDto toListEventTicketTypeResponseDto(TicketType ticketType);
+
+    // Get Event Details (Organizer)
+    GetEventDetailsResponseDto toGetEventDetailsResponseDto(Event event);
+    GetEventDetailsTicketTypesResponseDto toGetEventDetailsTicketTypesResponseDto(TicketType ticketType);
+
+    // List Published Events (Public)
+    ListPublishedEventResponseDto toListPublishedEventResponseDto(Event event);
+
+    // Get Published Event Details (Public)
+    GetPublishedEventDetailsResponseDto toGetPublishedEventDetailsResponseDto(Event event);
+    GetPublishedEventDetailsTicketTypesResponseDto toGetPublishedEventDetailsTicketTypesResponseDto(TicketType ticketType);
 }
