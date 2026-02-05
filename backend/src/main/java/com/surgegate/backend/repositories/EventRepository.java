@@ -1,7 +1,7 @@
 package com.surgegate.backend.repositories;
 
-import com.surgegate.backend.entities.Event;
-import com.surgegate.backend.entities.EventStatusEnum;
+import com.surgegate.backend.domain.entities.Event;
+import com.surgegate.backend.domain.entities.EventStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;

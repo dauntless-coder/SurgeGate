@@ -1,6 +1,6 @@
 package com.surgegate.backend.repositories;
 
-import com.surgegate.backend.entities.User;
+import com.surgegate.backend.domain.entities.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

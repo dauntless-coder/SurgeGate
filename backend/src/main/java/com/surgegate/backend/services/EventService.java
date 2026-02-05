@@ -2,7 +2,7 @@ package com.surgegate.backend.services;
 
 import com.surgegate.backend.domain.CreateEventRequest;
 import com.surgegate.backend.domain.UpdateEventRequest;
-import com.surgegate.backend.entities.Event;
+import com.surgegate.backend.domain.entities.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

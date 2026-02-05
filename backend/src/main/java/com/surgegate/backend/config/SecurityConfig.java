@@ -1,6 +1,7 @@
 package com.surgegate.backend.config;
 
-import com.devtiro.tickets.filters.UserProvisioningFilter;
+
+import com.surgegate.backend.filters.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

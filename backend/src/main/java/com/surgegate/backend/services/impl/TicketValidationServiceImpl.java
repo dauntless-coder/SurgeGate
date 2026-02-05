@@ -1,11 +1,11 @@
 package com.surgegate.backend.services.impl;
 
-import com.surgegate.backend.entities.QrCode;
-import com.surgegate.backend.entities.QrCodeStatusEnum;
-import com.surgegate.backend.entities.Ticket;
-import com.surgegate.backend.entities.TicketValidation;
-import com.surgegate.backend.entities.TicketValidationMethod;
-import com.surgegate.backend.entities.TicketValidationStatusEnum;
+import com.surgegate.backend.domain.entities.QrCode;
+import com.surgegate.backend.domain.entities.QrCodeStatusEnum;
+import com.surgegate.backend.domain.entities.Ticket;
+import com.surgegate.backend.domain.entities.TicketValidation;
+import com.surgegate.backend.domain.entities.TicketValidationMethod;
+import com.surgegate.backend.domain.entities.TicketValidationStatusEnum;
 import com.surgegate.backend.exceptions.QrCodeNotFoundException;
 import com.surgegate.backend.exceptions.TicketNotFoundException;
 import com.surgegate.backend.repositories.QrCodeRepository;

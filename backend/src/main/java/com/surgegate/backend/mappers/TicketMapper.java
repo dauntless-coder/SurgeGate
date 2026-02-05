@@ -4,9 +4,9 @@ package com.surgegate.backend.mappers;
 import com.surgegate.backend.domain.dtos.GetTicketResponseDto;
 import com.surgegate.backend.domain.dtos.ListTicketResponseDto;
 import com.surgegate.backend.domain.dtos.ListTicketTicketTypeResponseDto;
-import com.surgegate.backend.entities.Event;
-import com.surgegate.backend.entities.Ticket;
-import com.surgegate.backend.entities.TicketType;
+import com.surgegate.backend.domain.entities.Event;
+import com.surgegate.backend.domain.entities.Ticket;
+import com.surgegate.backend.domain.entities.TicketType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

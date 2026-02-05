@@ -2,7 +2,7 @@ package com.surgegate.backend.mappers;
 
 
 import com.surgegate.backend.domain.dtos.TicketValidationResponseDto;
-import com.surgegate.backend.entities.TicketValidation;
+import com.surgegate.backend.domain.entities.TicketValidation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

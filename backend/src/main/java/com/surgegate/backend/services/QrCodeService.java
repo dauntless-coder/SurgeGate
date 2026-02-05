@@ -1,7 +1,7 @@
 package com.surgegate.backend.services;
 
-import com.surgegate.backend.entities.QrCode;
-import com.surgegate.backend.entities.Ticket;
+import com.surgegate.backend.domain.entities.QrCode;
+import com.surgegate.backend.domain.entities.Ticket;
 
 public interface QrCodeService {
 

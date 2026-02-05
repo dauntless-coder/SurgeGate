@@ -3,7 +3,7 @@ package com.surgegate.backend.controllers;
 
 import com.surgegate.backend.domain.dtos.GetPublishedEventDetailsResponseDto;
 import com.surgegate.backend.domain.dtos.ListPublishedEventResponseDto;
-import com.surgegate.backend.entities.Event;
+import com.surgegate.backend.domain.entities.Event;
 import com.surgegate.backend.mappers.EventMapper;
 import com.surgegate.backend.services.EventService;
 import lombok.RequiredArgsConstructor;

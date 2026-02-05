@@ -3,8 +3,8 @@ package com.surgegate.backend.controllers;
 
 import com.surgegate.backend.domain.dtos.TicketValidationRequestDto;
 import com.surgegate.backend.domain.dtos.TicketValidationResponseDto;
-import com.surgegate.backend.entities.TicketValidation;
-import com.surgegate.backend.entities.TicketValidationMethod;
+import com.surgegate.backend.domain.entities.TicketValidation;
+import com.surgegate.backend.domain.entities.TicketValidationMethod;
 import com.surgegate.backend.mappers.TicketValidationMapper;
 import com.surgegate.backend.services.TicketValidationService;
 import lombok.RequiredArgsConstructor;

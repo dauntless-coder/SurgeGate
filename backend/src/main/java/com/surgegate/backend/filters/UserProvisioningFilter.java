@@ -1,6 +1,6 @@
 package com.surgegate.backend.filters;
 
-import com.surgegate.backend.entities.User;
+import com.surgegate.backend.domain.entities.User;
 import com.surgegate.backend.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

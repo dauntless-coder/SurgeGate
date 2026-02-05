@@ -1,6 +1,6 @@
 package com.surgegate.backend.services.impl;
 
-import com.surgegate.backend.entities.Ticket;
+import com.surgegate.backend.domain.entities.Ticket;
 import com.surgegate.backend.repositories.TicketRepository;
 import com.surgegate.backend.services.TicketService;
 import lombok.RequiredArgsConstructor;

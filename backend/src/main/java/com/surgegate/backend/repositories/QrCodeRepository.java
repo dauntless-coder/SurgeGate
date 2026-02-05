@@ -1,7 +1,7 @@
 package com.surgegate.backend.repositories;
 
-import com.surgegate.backend.entities.QrCode;
-import com.surgegate.backend.entities.QrCodeStatusEnum;
+import com.surgegate.backend.domain.entities.QrCode;
+import com.surgegate.backend.domain.entities.QrCodeStatusEnum;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

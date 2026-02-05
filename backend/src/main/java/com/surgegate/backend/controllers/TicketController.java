@@ -3,8 +3,8 @@ package com.surgegate.backend.controllers;
 
 import com.surgegate.backend.domain.dtos.GetTicketResponseDto;
 import com.surgegate.backend.domain.dtos.ListTicketResponseDto;
-import com.surgegate.backend.entities.Event;
-import com.surgegate.backend.entities.TicketType;
+import com.surgegate.backend.domain.entities.Event;
+import com.surgegate.backend.domain.entities.TicketType;
 import com.surgegate.backend.mappers.TicketMapper;
 import com.surgegate.backend.services.EventService;
 import com.surgegate.backend.services.QrCodeService;

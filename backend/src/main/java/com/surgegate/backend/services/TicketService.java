@@ -1,6 +1,6 @@
 package com.surgegate.backend.services;
 
-import com.surgegate.backend.entities.Ticket;
+import com.surgegate.backend.domain.entities.Ticket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.Optional;
