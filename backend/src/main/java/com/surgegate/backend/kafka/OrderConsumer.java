@@ -1,8 +1,8 @@
 package com.surgegate.backend.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.surgegate.backend.model.Order;
-import com.surgegate.backend.repository.OrderRepository;
+import com.surgegate.backend.entities.Order;
+import com.surgegate.backend.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

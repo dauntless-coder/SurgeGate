@@ -1,4 +1,4 @@
-package com.surgegate.backend.exception;
+package com.surgegate.backend.exceptions;
 
 import com.surgegate.backend.dto.ErrorDto;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
-package com.surgegate.backend.repository;
+package com.surgegate.backend.repositories;
 
-import com.surgegate.backend.model.Ticket;
+import com.surgegate.backend.entities.Ticket;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.surgegate.backend.model;
+package com.surgegate.backend.entities;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

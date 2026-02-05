@@ -1,7 +1,7 @@
-package com.surgegate.backend.service;
+package com.surgegate.backend.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.surgegate.backend.model.Ticket;
+import com.surgegate.backend.entities.Ticket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;

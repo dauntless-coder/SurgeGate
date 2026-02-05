@@ -1,9 +1,8 @@
-package com.surgegate.backend.controller;
+package com.surgegate.backend.controllers;
 
-import com.surgegate.backend.config.JwtUtil;
 import com.surgegate.backend.dto.*;
-import com.surgegate.backend.model.User;
-import com.surgegate.backend.repository.UserRepository;
+import com.surgegate.backend.entities.User;
+import com.surgegate.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

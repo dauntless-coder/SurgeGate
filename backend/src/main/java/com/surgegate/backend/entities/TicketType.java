@@ -1,4 +1,4 @@
-package com.surgegate.backend.model;
+package com.surgegate.backend.entities;
 
 import lombok.Data;
 

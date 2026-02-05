@@ -1,7 +1,7 @@
-package com.surgegate.backend.mapper;
+package com.surgegate.backend.mappers;
 
 import com.surgegate.backend.dto.CreateEventRequestDto;
-import com.surgegate.backend.model.Event;
+import com.surgegate.backend.entities.Event;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

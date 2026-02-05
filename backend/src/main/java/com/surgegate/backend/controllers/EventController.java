@@ -1,11 +1,10 @@
-package com.surgegate.backend.controller;
+package com.surgegate.backend.controllers;
 
 import com.surgegate.backend.dto.CreateEventRequest;
-import com.surgegate.backend.model.Event;
-import com.surgegate.backend.repository.EventRepository;
-import com.surgegate.backend.service.SurgeGateService;
+import com.surgegate.backend.entities.Event;
+import com.surgegate.backend.repositories.EventRepository;
+import com.surgegate.backend.services.SurgeGateService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;

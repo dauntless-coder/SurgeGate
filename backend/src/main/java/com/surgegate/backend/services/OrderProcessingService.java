@@ -1,8 +1,8 @@
-package com.surgegate.backend.service;
+package com.surgegate.backend.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.surgegate.backend.model.Ticket;
-import com.surgegate.backend.repository.TicketRepository;
+import com.surgegate.backend.entities.Ticket;
+import com.surgegate.backend.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

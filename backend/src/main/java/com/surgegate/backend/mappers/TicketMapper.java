@@ -1,9 +1,9 @@
-package com.surgegate.backend.mapper;
+package com.surgegate.backend.mappers;
 
 import com.surgegate.backend.dto.TicketResponse;
-import com.surgegate.backend.model.Event;
-import com.surgegate.backend.model.Ticket;
-import com.surgegate.backend.repository.EventRepository;
+import com.surgegate.backend.entities.Event;
+import com.surgegate.backend.entities.Ticket;
+import com.surgegate.backend.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

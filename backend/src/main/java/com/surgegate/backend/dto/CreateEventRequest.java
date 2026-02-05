@@ -1,5 +1,5 @@
 package com.surgegate.backend.dto;
-import com.surgegate.backend.model.Event;
+import com.surgegate.backend.entities.Event;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.surgegate.backend.repository;
+package com.surgegate.backend.repositories;
 
-import com.surgegate.backend.model.Order;
+import com.surgegate.backend.entities.Order;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

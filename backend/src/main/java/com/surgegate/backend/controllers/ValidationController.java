@@ -1,9 +1,9 @@
-package com.surgegate.backend.controller;
+package com.surgegate.backend.controllers;
 
 import com.surgegate.backend.dto.TicketValidationRequestDto;
 import com.surgegate.backend.dto.TicketValidationResponseDto;
-import com.surgegate.backend.model.Ticket;
-import com.surgegate.backend.repository.TicketRepository;
+import com.surgegate.backend.entities.Ticket;
+import com.surgegate.backend.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

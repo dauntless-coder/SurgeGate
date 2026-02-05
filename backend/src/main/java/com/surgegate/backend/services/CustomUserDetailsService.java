@@ -1,6 +1,6 @@
-package com.surgegate.backend.service;
+package com.surgegate.backend.services;
 
-import com.surgegate.backend.repository.UserRepository;
+import com.surgegate.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
