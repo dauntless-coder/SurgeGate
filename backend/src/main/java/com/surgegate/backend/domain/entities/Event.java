@@ -46,6 +46,8 @@ public class Event {
     @Builder.Default
     private List<com.surgegate.backend.domain.entities.Ticket> tickets = new ArrayList<>();
 
+    private EventStatusEnum status;
+
     @CreatedDate
     private LocalDateTime createdAt;
 

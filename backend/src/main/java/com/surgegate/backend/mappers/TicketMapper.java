@@ -1,6 +1,5 @@
 package com.surgegate.backend.mappers;
 
-
 import com.surgegate.backend.domain.dtos.GetTicketResponseDto;
 import com.surgegate.backend.domain.dtos.ListTicketResponseDto;
 import com.surgegate.backend.domain.dtos.ListTicketTicketTypeResponseDto;
@@ -13,15 +12,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TicketMapper {
 
-    // Maps the Ticket entity to the List DTO.
-    // Note: Since Ticket entity doesn't store TicketType name/price,
-    // those fields will be null in the list view unless fetched separately.
     @Mapping(target = "ticketType.id", source = "ticketTypeId")
     ListTicketResponseDto toListTicketResponseDto(Ticket ticket);
 
     ListTicketTicketTypeResponseDto toListTicketTicketTypeResponseDto(TicketType ticketType);
 
-    // Complex mapping: Combines Ticket + Event + TicketType into one rich DTO
     @Mapping(target = "id", source = "ticket.id")
     @Mapping(target = "status", source = "ticket.status")
     @Mapping(target = "price", source = "ticketType.price")

@@ -13,6 +13,7 @@ import com.surgegate.backend.repositories.TicketRepository;
 import com.surgegate.backend.repositories.TicketValidationRepository;
 import com.surgegate.backend.services.TicketValidationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class TicketValidationServiceImpl implements TicketValidationService {
 
     private final QrCodeRepository qrCodeRepository;
@@ -51,13 +53,21 @@ public class TicketValidationServiceImpl implements TicketValidationService {
     private TicketValidation validateTicket(Ticket ticket, TicketValidationMethod method) {
         TicketValidation validation = new TicketValidation();
         validation.setTicketId(ticket.getId());
-        validation.setValidationMethod(method);
+        validation.setMethod(method);
         validation.setCreatedAt(LocalDateTime.now());
 
-        // Simple validation logic: If any previous validation was VALID, this one is INVALID
-        // Note: This requires querying previous validations if you store them separately
-        // For now, we assume valid:
-        validation.setStatus(TicketValidationStatusEnum.VALID);
+        // Check if ticket was already validated (prevent multiple uses)
+        boolean alreadyValidated = ticketValidationRepository
+                .findByTicketIdAndStatus(ticket.getId(), TicketValidationStatusEnum.VALID)
+                .isPresent();
+        
+        if (alreadyValidated) {
+            validation.setStatus(TicketValidationStatusEnum.INVALID);
+            log.warn("Ticket {} has already been validated", ticket.getId());
+        } else {
+            validation.setStatus(TicketValidationStatusEnum.VALID);
+            log.info("Ticket {} validated successfully", ticket.getId());
+        }
 
         return ticketValidationRepository.save(validation);
     }

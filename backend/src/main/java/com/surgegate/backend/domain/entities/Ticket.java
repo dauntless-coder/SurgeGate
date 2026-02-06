@@ -1,7 +1,8 @@
 package com.surgegate.backend.domain.entities;
 
-import com.surgegate.backend.domain.entities.enums.TicketStatus;
 import java.time.LocalDateTime;
+
+import com.surgegate.backend.domain.entities.TicketStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +24,9 @@ public class Ticket {
     @Id
     private String id;
 
-    private TicketStatus status;
+    // Use the standard Enum from com.surgegate.backend.entities
+    private TicketStatusEnum status;
+
     private String eventId;
     private String ticketTypeId;
     private String userId;

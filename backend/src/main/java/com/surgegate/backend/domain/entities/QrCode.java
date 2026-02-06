@@ -1,7 +1,8 @@
 package com.surgegate.backend.domain.entities;
 
-import com.surgegate.backend.domain.entities.enums.QrCodeType;
 import java.time.LocalDateTime;
+
+import com.surgegate.backend.domain.entities.QrCodeStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,9 +24,9 @@ public class QrCode {
     @Id
     private String id;
 
-    private QrCodeType type;
+    private QrCodeStatusEnum status;
 
-    private String value;
+    private String value; // Base64 Encoded Image
 
     private String ticketId;
     private String ticketPurchaserId;

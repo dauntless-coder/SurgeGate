@@ -115,6 +115,7 @@ public class EventServiceImpl implements EventService {
                 TicketType tt = existingTypes.get(req.getId());
                 tt.setName(req.getName());
                 tt.setPrice(req.getPrice());
+                tt.setDescription(req.getDescription());
                 tt.setTotalAvailable(req.getTotalAvailable());
                 updatedTypes.add(tt);
 
@@ -126,6 +127,7 @@ public class EventServiceImpl implements EventService {
                 tt.setId(UUID.randomUUID().toString());
                 tt.setName(req.getName());
                 tt.setPrice(req.getPrice());
+                tt.setDescription(req.getDescription());
                 tt.setTotalAvailable(req.getTotalAvailable());
                 updatedTypes.add(tt);
 
@@ -140,7 +142,16 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void deleteEventForOrganizer(String organizerId, String id) {
-        // Note: You might want to delete Redis keys here too
+        // Fetch event to get ticket types before deletion
+        Event event = eventRepository.findByIdAndOrganizerId(id, organizerId)
+                .orElseThrow(() -> new EventNotFoundException("Event not found"));
+        
+        // Clean up Redis stock keys for all ticket types
+        event.getTicketTypes().forEach(tt -> {
+            String key = "stock:" + id + ":" + tt.getId();
+            surgeGateService.deleteStock(key);
+        });
+        
         eventRepository.deleteById(id);
     }
 
