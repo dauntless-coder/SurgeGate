@@ -1,41 +1,26 @@
 package com.surgegate.backend.config;
 
-
-import com.surgegate.backend.filters.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(
-            HttpSecurity http,
-            UserProvisioningFilter userProvisioningFilter,
-            JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**").permitAll()
-                                .requestMatchers("/api/v1/events").hasRole("ORGANIZER")
-                                // Catch all rule
-                                .anyRequest().authenticated())
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt ->
-                                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)
-                        ))
-                .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
-
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/api/buy", "/api/status/**", "/api/attendee/**", "/api/organizer/**", "/api/staff/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .cors(cors -> cors.disable())
+            .csrf(csrf -> csrf.disable());
+        
         return http.build();
     }
-
 }
+

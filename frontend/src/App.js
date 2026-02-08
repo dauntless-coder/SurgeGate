@@ -1,110 +1,106 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import "./App.css";
-
-const API_URL = "http://localhost:8080/api";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './App.css';
+import OrganizerUI from './components/OrganizerUI';
+import AttendeeUI from './components/AttendeeUI';
+import StaffUI from './components/StaffUI';
+import LoadTester from './components/LoadTester';
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <nav>
-          <Link to="/">Attendee</Link> | <Link to="/organizer">Organizer</Link> | <Link to="/staff">Staff</Link>
-        </nav>
-        <Routes>
-          <Route path="/" element={<AttendeeView />} />
-          <Route path="/organizer" element={<OrganizerView />} />
-          <Route path="/staff" element={<StaffView />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
-
-// --- 1. ORGANIZER VIEW ---
-function OrganizerView() {
-  const [event, setEvent] = useState({ name: "", venue: "", date: "" });
-  const [ticket, setTicket] = useState({ typeName: "General", price: 0, totalAllocation: 100 });
-
-  const createEvent = async () => {
-    const payload = { ...event, ticketTypes: [ticket] };
-    await axios.post(`${API_URL}/events`, payload);
-    alert("Event Created & Stock Loaded to Redis!");
-  };
-
-  return (
-    <div className="card">
-      <h2>Organizer Dashboard</h2>
-      <input placeholder="Event Name" onChange={(e) => setEvent({ ...event, name: e.target.value })} />
-      <input placeholder="Venue" onChange={(e) => setEvent({ ...event, venue: e.target.value })} />
-      <div className="ticket-box">
-        <h4>Ticket Config</h4>
-        <input placeholder="Type (e.g. VIP)" onChange={(e) => setTicket({ ...ticket, typeName: e.target.value })} />
-        <input placeholder="Qty" type="number" onChange={(e) => setTicket({ ...ticket, totalAllocation: e.target.value })} />
-      </div>
-      <button onClick={createEvent}>Create Event</button>
-    </div>
-  );
-}
-
-// --- 2. ATTENDEE VIEW ---
-function AttendeeView() {
-  const [events, setEvents] = useState([]);
+  const [role, setRole] = useState(null);
+  const [userId, setUserId] = useState('');
+  const [editingUserId, setEditingUserId] = useState('');
+  const [showLoadTester, setShowLoadTester] = useState(false);
 
   useEffect(() => {
-    axios.get(`${API_URL}/events`).then((res) => setEvents(res.data));
+    // Try to load userId from localStorage, otherwise generate
+    const savedUserId = localStorage.getItem('attendeeUserId');
+    if (savedUserId) {
+      setUserId(savedUserId);
+      setEditingUserId(savedUserId);
+    } else {
+      const id = 'user_' + Math.floor(Math.random() * 100000);
+      setUserId(id);
+      setEditingUserId(id);
+      localStorage.setItem('attendeeUserId', id);
+    }
   }, []);
 
-  const buyTicket = async (eventId, type) => {
-    try {
-      const res = await axios.post(`${API_URL}/buy`, {
-        eventId, ticketType: type, userId: "User_" + Math.floor(Math.random() * 1000)
-      });
-      alert(`Success! Ticket ID: ${res.data}`);
-    } catch (err) {
-      alert(err.response.data);
+  const handleSetAttendeeId = () => {
+    if (!editingUserId.trim()) {
+      alert('❌ Please enter a valid User ID');
+      return;
     }
+    setUserId(editingUserId);
+    localStorage.setItem('attendeeUserId', editingUserId);
+    alert('✅ User ID updated: ' + editingUserId);
   };
 
   return (
-    <div className="card">
-      <h2>Upcoming Events</h2>
-      {events.map((ev) => (
-        <div key={ev.id} className="event-row">
-          <h3>{ev.name}</h3>
-          <p>{ev.venue}</p>
-          {ev.ticketTypes.map((t) => (
-            <button key={t.typeName} onClick={() => buyTicket(ev.id, t.typeName)}>
-              Buy {t.typeName} (${t.price})
+    <div className="App">
+      <header className="App-header">
+        <h1>⚡ SurgeGate - High Concurrency Event Ticketing System</h1>
+        
+        {!role ? (
+          <div className="role-selection">
+            <h2>Select Your Role</h2>
+            <div className="role-buttons">
+              <button className="btn-organizer" onClick={() => setRole('organizer')}>
+                🎭 Organizer
+              </button>
+              <button className="btn-attendee" onClick={() => setRole('attendee')}>
+                🎫 Attendee
+              </button>
+              <button className="btn-staff" onClick={() => setRole('staff')}>
+                ✓ Staff Validator
+              </button>
+            </div>
+            <button className="btn-load-test" onClick={() => setShowLoadTester(true)}>
+              ⚙️ Load Tester (Concurrency Demo)
             </button>
-          ))}
+          </div>
+        ) : role === 'attendee' && !editingUserId.trim() ? (
+          <div className="role-selection">
+            <h2>🎫 Create Your Attendee ID</h2>
+            <p>Enter a unique ID to use for all your ticket purchases</p>
+            <input
+              type="text"
+              placeholder="e.g., john_doe_123"
+              value={editingUserId}
+              onChange={(e) => setEditingUserId(e.target.value)}
+              className="user-id-input"
+            />
+            <button className="btn-success" onClick={handleSetAttendeeId}>
+              Create ID & Continue
+            </button>
+            <button className="btn-back" onClick={() => {
+              setRole(null);
+              setEditingUserId(userId);
+            }}>
+              ← Back
+            </button>
+          </div>
+        ) : (
+          <div className="role-section">
+            <button className="btn-back" onClick={() => setRole(null)}>
+              ← Back to Role Selection
+            </button>
+            
+            {role === 'organizer' && <OrganizerUI />}
+            {role === 'attendee' && <AttendeeUI userId={userId} />}
+            {role === 'staff' && <StaffUI />}
+          </div>
+        )}
+      </header>
+
+      {showLoadTester && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="modal-close" onClick={() => setShowLoadTester(false)}>✕</button>
+            <LoadTester />
+          </div>
         </div>
-      ))}
-    </div>
-  );
-}
-
-// --- 3. STAFF VIEW ---
-function StaffView() {
-  const [ticketId, setTicketId] = useState("");
-  const [status, setStatus] = useState("");
-
-  const scanTicket = async () => {
-    try {
-      const res = await axios.post(`${API_URL}/validate/${ticketId}`);
-      setStatus(res.data);
-    } catch (err) {
-      setStatus(err.response.data);
-    }
-  };
-
-  return (
-    <div className="card">
-      <h2>Staff Gate Scanner</h2>
-      <input placeholder="Enter Ticket ID" onChange={(e) => setTicketId(e.target.value)} />
-      <button onClick={scanTicket}>Validate Entry</button>
-      <h1>{status}</h1>
+      )}
     </div>
   );
 }
