@@ -20,31 +20,37 @@ function LoadTester() {
 
     try {
       const startTime = Date.now();
-      const promises = [];
       const results = { success: 0, failed: 0, errors: [] };
 
-      // Simulate thundering herd: All users try to buy at the same time
+      // Create array of user requests
+      const requests = [];
       for (let i = 0; i < numUsers; i++) {
-        const userPromise = (async () => {
-          try {
-            const userId = `stress_user_${i}_${Date.now()}`;
-            const res = await axios.post('http://localhost:8080/api/attendee/buy', null, {
-              params: {
-                concertId,
-                userId
-              }
-            });
-            results.success++;
-          } catch (err) {
-            results.failed++;
-            results.errors.push(err.response?.data?.error || err.message);
-          }
-          setProgress(prev => prev + 1);
-        })();
-        promises.push(userPromise);
+        requests.push({
+          userId: `stress_user_${i}_${Date.now()}`,
+          index: i
+        });
       }
 
-      await Promise.all(promises);
+      // Process requests with concurrency limit
+      const processRequest = async (request) => {
+        try {
+          const res = await axios.post('http://localhost:8080/api/attendee/buy', null, {
+            params: {
+              concertId,
+              userId: request.userId
+            }
+          });
+          results.success++;
+        } catch (err) {
+          results.failed++;
+          const errorMsg = err.response?.data?.error || err.message;
+          results.errors.push(errorMsg);
+        }
+        setProgress(prev => prev + 1);
+      };
+
+      // Execute all requests in parallel
+      await Promise.all(requests.map(processRequest));
 
       const endTime = Date.now();
       const duration = (endTime - startTime) / 1000;
@@ -55,7 +61,7 @@ function LoadTester() {
         totalRequests: numUsers,
         duration: duration.toFixed(2),
         requestsPerSecond: ((numUsers / duration).toFixed(2)),
-        errors: results.errors.slice(0, 5) // Show first 5 errors
+        errors: results.errors.slice(0, 5)
       });
     } catch (err) {
       alert('❌ Load test failed: ' + err.message);
@@ -82,7 +88,7 @@ function LoadTester() {
           <input
             type="number"
             min="1"
-            max="1000"
+            max="10000"
             value={numUsers}
             onChange={(e) => setNumUsers(parseInt(e.target.value))}
             disabled={isRunning}

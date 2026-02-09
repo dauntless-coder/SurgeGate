@@ -95,6 +95,8 @@ function OrganizerUI() {
     }
   };
 
+
+
   const handleGetStats = async (concertId) => {
     try {
       const res = await axios.get(`http://localhost:8080/api/organizer/concert/${concertId}/stats`);
@@ -241,9 +243,9 @@ function OrganizerUI() {
           <h3>📊 Concert Statistics</h3>
           <p><strong>Concert:</strong> {selectedConcertStats.title}</p>
           <p><strong>Total Tickets:</strong> {selectedConcertStats.totalTickets}</p>
-          <p><strong>Sold:</strong> {selectedConcertStats.soldTickets} ✅</p>
-          <p><strong>Available:</strong> {selectedConcertStats.availableTickets} 🔓</p>
-          <p><strong>Revenue:</strong> ${selectedConcertStats.revenue.toFixed(2)}</p>
+          <p><strong>Sold:</strong> {Math.max(0, selectedConcertStats.soldTickets)} ✅</p>
+          <p><strong>Available:</strong> {Math.max(0, selectedConcertStats.availableTickets)} 🔓</p>
+          <p><strong>Revenue:</strong> ${(Math.max(0, selectedConcertStats.soldTickets) * Math.max(0, selectedConcertStats.availableTickets === 0 ? selectedConcertStats.revenue / selectedConcertStats.totalTickets : 1)).toFixed(2)}</p>
         </div>
       )}
     </div>

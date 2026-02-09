@@ -64,9 +64,31 @@ public class AttendeeController {
     }
 
     @GetMapping("/orders/{userId}")
-    public ResponseEntity<List<Order>> getUserOrders(@PathVariable String userId) {
+    public ResponseEntity<?> getUserOrders(@PathVariable String userId) {
         List<Order> orders = orderService.getUserOrders(userId);
-        return ResponseEntity.ok(orders);
+        
+        // Enrich orders with concert title
+        List<Map<String, Object>> enrichedOrders = new java.util.ArrayList<>();
+        for (Order order : orders) {
+            Map<String, Object> orderData = new HashMap<>();
+            orderData.put("id", order.getId());
+            orderData.put("concertId", order.getConcertId());
+            orderData.put("status", order.getStatus());
+            orderData.put("amount", order.getAmount());
+            orderData.put("ticketCode", order.getTicketCode());
+            
+            // Fetch concert title
+            Optional<Concert> concert = concertRepository.findById(order.getConcertId());
+            if (concert.isPresent()) {
+                orderData.put("concertTitle", concert.get().getTitle());
+            } else {
+                orderData.put("concertTitle", "Unknown Event");
+            }
+            
+            enrichedOrders.add(orderData);
+        }
+        
+        return ResponseEntity.ok(enrichedOrders);
     }
 
     @GetMapping("/order/{orderId}")

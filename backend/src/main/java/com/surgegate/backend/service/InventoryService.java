@@ -73,11 +73,25 @@ public class InventoryService {
         String stockKey = STOCK_KEY_PREFIX + concertId;
         redisTemplate.opsForValue().set(stockKey, String.valueOf(totalTickets));
         
-        // Create individual tickets
+        // Create individual tickets in batch
+        java.util.List<Ticket> tickets = new java.util.ArrayList<>();
         for (int i = 0; i < totalTickets; i++) {
             Ticket ticket = new Ticket(concertId, generateTicketCode(concertId));
-            ticketRepository.save(ticket);
+            tickets.add(ticket);
         }
+        // Save all tickets in batch
+        ticketRepository.saveAll(tickets);
+    }
+
+    public int syncStockFromMongoDB(String concertId) {
+        // Count actual available tickets in MongoDB
+        int actualCount = (int) ticketRepository.findByConcertIdAndStatus(concertId, "AVAILABLE").size();
+        
+        // Update Redis with actual count
+        String stockKey = STOCK_KEY_PREFIX + concertId;
+        redisTemplate.opsForValue().set(stockKey, String.valueOf(actualCount));
+        
+        return actualCount;
     }
 
     private String generateTicketCode(String concertId) {

@@ -11,15 +11,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/buy", "/api/status/**", "/api/attendee/**", "/api/organizer/**", "/api/staff/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .cors(cors -> cors.disable())
-            .csrf(csrf -> csrf.disable());
-        
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/organizers/**", "/concerts/**", "/attendees/**",
+                                "/flashsales/**", "/staff/**", "/orders/**").permitAll()
+                        .anyRequest().permitAll()
+                )
+                .httpBasic(basic -> basic.disable());
+
         return http.build();
     }
 }

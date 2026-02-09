@@ -55,7 +55,10 @@ public class OrganizerController {
         Optional<Concert> concert = concertRepository.findById(concertId);
         if (concert.isPresent()) {
             Concert c = concert.get();
-            c.setAvailableTickets(inventoryService.getAvailableStock(concertId));
+            int available = inventoryService.getAvailableStock(concertId);
+            // Ensure available is never negative
+            if (available < 0) available = 0;
+            c.setAvailableTickets(available);
             return ResponseEntity.ok(c);
         }
         return ResponseEntity.notFound().build();
@@ -70,7 +73,11 @@ public class OrganizerController {
 
         Concert c = concert.get();
         int available = inventoryService.getAvailableStock(concertId);
+        // Ensure available is never negative
+        if (available < 0) available = 0;
         int sold = c.getTotalTickets() - available;
+        // Ensure sold doesn't exceed total tickets
+        if (sold > c.getTotalTickets()) sold = c.getTotalTickets();
 
         Map<String, Object> stats = new HashMap<>();
         stats.put("concertId", concertId);
@@ -135,5 +142,29 @@ public class OrganizerController {
             return ResponseEntity.ok("Concert cancelled");
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/concert/{concertId}/sync-stock")
+    public ResponseEntity<Map<String, Object>> syncConcertStock(@PathVariable String concertId) {
+        Optional<Concert> concert = concertRepository.findById(concertId);
+        if (!concert.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Sync stock from MongoDB
+        int actualAvailable = inventoryService.syncStockFromMongoDB(concertId);
+        
+        Concert c = concert.get();
+        int sold = c.getTotalTickets() - actualAvailable;
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("concertId", concertId);
+        result.put("title", c.getTitle());
+        result.put("totalTickets", c.getTotalTickets());
+        result.put("actualAvailable", actualAvailable);
+        result.put("soldCount", sold);
+        result.put("message", "✅ Stock synced successfully!");
+        
+        return ResponseEntity.ok(result);
     }
 }

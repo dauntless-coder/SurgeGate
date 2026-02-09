@@ -106,7 +106,7 @@ function AttendeeUI({ userId }) {
                 <p>📍 {concert.venue}</p>
                 <p>💰 ${concert.price}</p>
                 <p className={concert.availableTickets > 0 ? 'available' : 'sold-out'}>
-                  Available: {concert.availableTickets} / {concert.totalTickets}
+                  Available: {Math.max(0, concert.availableTickets)} / {concert.totalTickets}
                 </p>
                 <button
                   onClick={() => handleBuyTicket(concert.id)}
@@ -126,10 +126,11 @@ function AttendeeUI({ userId }) {
           <h3>📋 Your Purchases</h3>
           {userOrders.map(order => (
             <div key={order.id} className="order-card">
+              <p><strong>Event:</strong> {order.concertTitle}</p>
               <p><strong>Order ID:</strong> {order.id}</p>
+              <p><strong>Ticket Code:</strong> {order.ticketCode}</p>
               <p><strong>Status:</strong> {order.status}</p>
               <p><strong>Amount:</strong> ${order.amount}</p>
-              <p><strong>Purchased:</strong> {new Date(order.createdAt).toLocaleString()}</p>
             </div>
           ))}
         </div>
