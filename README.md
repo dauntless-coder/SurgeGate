@@ -9,7 +9,10 @@ Inventory Overselling: Synchronous "Race Conditions" allow multiple users to cla
 
 The Bottleneck: Blocking database transactions create a "flood" that overwhelms backend services, causing total system failure.
 
-🛡️ The Solution: Three-Tier DefenseSurgegate employs a unique architecture to transform a traffic "flood" into a manageable "stream":Tier 1: Redis (The Gatekeeper) * Uses atomic operations and distributed locking for real-time inventory management.Processes stock checks in $O(1)$ time, rejecting excess requests in microseconds.Tier 2: Apache Kafka (The Shock Absorber) * Utilizes Queue-Based Load Leveling to buffer valid requests.Protects downstream services from backend overload during millisecond-critical bursts.Tier 3: Spring Boot & MongoDB (Asynchronous Persistence) * Processes orders via asynchronous consumer services to ensure data integrity.Provides non-blocking "Fire-and-Forget" feedback to users.
+🛡️ The Solution: Three-Tier DefenseSurgegate employs a unique architecture to transform a traffic "flood" into a manageable "stream":
+Tier 1: Redis (The Gatekeeper) * Uses atomic operations and distributed locking for real-time inventory management.Processes stock checks in $O(1)$ time, rejecting excess requests in microseconds.
+Tier 2: Apache Kafka (The Shock Absorber) * Utilizes Queue-Based Load Leveling to buffer valid requests.Protects downstream services from backend overload during millisecond-critical bursts.
+Tier 3: Spring Boot & MongoDB (Asynchronous Persistence) * Processes orders via asynchronous consumer services to ensure data integrity.Provides non-blocking "Fire-and-Forget" feedback to users.
 
 ✨ Why Surgegate Wins
 1. Business Impact
